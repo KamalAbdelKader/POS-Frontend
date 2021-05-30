@@ -1,0 +1,34 @@
+<form class="date-block text-center" [formGroup]="filterForm" style="display: inline-flex;">
+	<div class="date-block__list">
+    <mat-form-field>
+      <input matInput 
+        [matDatepicker]="fromDate" 
+        placeholder="From Date" 
+        formControlName ="fromDate">
+      <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+      <mat-datepicker #fromDate></mat-datepicker>
+    </mat-form-field>
+  </div>
+  	<div class="date-block__list">
+    <mat-form-field>
+      <input matInput 
+        [matDatepicker]="toDate" 
+        placeholder="To Date" 
+        formControlName ="toDate">
+      <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+      <mat-datepicker #toDate></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <br>
+  <div>
+    <mat-form-field appearance="fill">
+      <mat-label>Select Category</mat-label>
+      <select formControlName ="categoryName" matNativeControl>
+        <option value="">Select Category</option>
+        <option *ngFor="let category of categories" [value]="category.name">
+          {{ category.name }}
+        </option>
+      </select>
+    </mat-form-field>
+  </div>
+</form>

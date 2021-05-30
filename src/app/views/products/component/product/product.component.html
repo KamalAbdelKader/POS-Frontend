@@ -1,0 +1,35 @@
+<div class="row mt-80">
+  <div class="col-sm-12 col-md-3">
+    <app-category [category]="categoryId"></app-category>
+  </div>
+  <div class="col-sm-12 col-md-9 d-flex flex-row flex-wrap">
+    <div
+      *ngFor="let p of items; let i = index"
+      class="parents col-lg-4 col-md-6 col-sm-12 mb-4">
+      <ProductCart [item]="p">
+
+        <div class="card-footer">
+          <button
+            md-raised-button
+            *ngIf="getQuantity(p) === 0; else updateQuantity"
+            (click)="addToCart(p)"
+            class="btn btn-secondary btn-block">
+            Add to Cart
+          </button>
+          <ng-template #updateQuantity>
+            <product-quantity [item]="p"></product-quantity>
+            <button
+              md-raised-button
+              (click)="openDialog(p)"
+              class="btn btn-secondary btn-block">
+              <!-- <mat-icon style="font-size: 40px" [matTooltip]="'Extra'">playlist_add</mat-icon> -->
+              Extra  
+            </button>
+          </ng-template>
+        </div>
+      </ProductCart>
+    </div>
+  </div>
+</div>
+
+ 

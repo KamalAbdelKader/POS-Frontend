@@ -1,0 +1,48 @@
+<h1 style="margin-top: 43px">Shopping Cart</h1>
+<div class="row col-10" *ngIf="items && items.length">
+  <p>You have {{ items.length }} items in your shopping cart.</p>
+  <table class="table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Product</th>
+        <th class="text-center" style="width: 230px">Quantity</th>
+        <th class="text-right" style="width: 200px">Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of items">
+        <td>
+          <div
+            [style.backgroundImage]="'url(' + item.image + ')'"
+            class="thumbnail"
+          ></div>
+        </td>
+        <td>
+          {{ item.name }} &nbsp;&nbsp;
+          {{ item.endUser | currency: "KWD":true }}
+        </td>
+        <td>
+          <product-quantity [item]="item"> </product-quantity>
+        </td>
+        <td class="text-right">
+          {{ shoppingCartService.getProductTotal(item) | currency: "KWD":true }}
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th class="text-right">
+          {{ shoppingCartService.getTotalPrice() | currency: "KWD":true }}
+        </th>
+      </tr>
+    </tfoot>
+  </table>
+  <button (click)="clearCart()" class="btn btn-danger btn-sm">Clear Shopping Cart</button>
+
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <button (click)="checkout()" class="btn btn-success btn-sm">Checkout</button>
+</div>

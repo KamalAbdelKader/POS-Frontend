@@ -1,0 +1,23 @@
+<h1 mat-dialog-title>Extra Items</h1>
+<div class="contianer">
+  <div class="row">
+    <div *ngFor="let p of items; let i = index" class="parents col-lg-4 col-md-6 col-sm-12 mb-4">
+      <ProductCart [item]="p">
+        <div class="card-footer">
+          <button
+            md-raised-button
+            *ngIf="(getQuantity(p) === 0); else updateQuantity"
+            (click)="addToCartExtraItem(p)"
+            class="btn btn-secondary btn-block">
+            Add to Cart
+          </button>
+          <ng-template #updateQuantity>
+            <product-quantity [extraItem]="p" [item]="data.item"></product-quantity>
+          </ng-template>
+        </div>
+      </ProductCart>
+    </div> 
+  </div>
+</div>
+
+

@@ -1,0 +1,113 @@
+<h1 style="margin-top: 43px">Shopping Cart</h1>
+<div style="width: 100%" *ngIf="dataSource.data && dataSource.data.length">
+  <p>You have {{ dataSource.data.length }} items in your shopping cart.</p>
+  <br />
+  <div class="example-container mat-elevation-z8">
+    <mat-table #table [dataSource]="dataSource" multiTemplateDataRows matSort>
+      <!--  
+    #sort="matSort"
+  -->
+      <!-- Position Column -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          Product
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ element.name }} </mat-cell>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="quantity">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          Quantity
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <product-quantity [item]="element"> </product-quantity>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="endUser">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          Price
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          {{ element.endUser | currency: "KWD":true }}
+        </mat-cell>
+      </ng-container>
+
+      <!-- Expanded Content Column - The detail row is made up of this one column -->
+      <ng-container matColumnDef="expandedDetail">
+        <mat-cell *matCellDef="let detail">
+          <table>
+            <tr *ngFor="let ex of detail.extraItems">
+              <td>{{ ex.name }}</td>
+              <td>
+                <product-quantity
+                  [extraItem]="ex"
+                  [item]="detail"
+                ></product-quantity>
+              </td>
+              <td>{{ ex.endUser | currency: "KWD":true }}</td>
+            </tr>
+          </table>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          action
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <button
+            mat-icon-button
+            *ngIf="expandedElement != element"
+            [class.expanded]="expandedElement == element"
+            (click)="expandedElement = element"
+          >
+            <mat-icon>keyboard_arrow_down</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            *ngIf="expandedElement == element"
+            [class.expanded]="expandedElement == undefined"
+            (click)="expandedElement = undefined"
+          >
+            <mat-icon>keyboard_arrow_up</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="productTotal">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          TotalPrice
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          {{ element.productTotal | currency: "KWD":true }}
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        matRipple
+        class="element-row"
+      ></mat-row>
+      <mat-row
+        *matRowDef="let row; columns: ['expandedDetail']"
+        [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'"
+        style="overflow: hidden"
+      >
+        {{ row }}
+      </mat-row>
+    </mat-table>
+    <mat-paginator class="paginator" #MatPaginator pageSize="5"></mat-paginator>
+  </div>
+
+  {{ shoppingCartService.getTotalPrice() | currency: "KWD":true }}
+
+  <button (click)="clearCart()" class="btn btn-danger btn-sm">Clear Shopping Cart</button>
+
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <button (click)="checkout()" class="btn btn-success btn-sm">Checkout</button>
+</div>
+

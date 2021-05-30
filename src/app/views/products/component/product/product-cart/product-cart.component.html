@@ -1,0 +1,13 @@
+<div *ngIf="item.name" class="card">
+  <img
+    class="img-fluid rounded-circle w-50 m-auto" 
+    [src]="get_ImageUrl(p)"
+   />
+  <div class="card-body">
+    <h4 class="card-header">  {{item.name}}  </h4>
+    <p class="card-text">  {{item.unit1}} </p>
+    <p class="card-text"> {{ item.endUser | currency: "KWD":true }}</p>
+  </div>
+
+  <ng-content class="card-footer"> </ng-content>
+</div>  

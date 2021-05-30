@@ -1,0 +1,24 @@
+table {
+    width: 100%;
+  }
+  
+  th.mat-sort-header-sorted {
+    color: #20a8d8;
+  }
+  
+  
+  .mat-form-field {
+    width: 100% !important;
+  }
+  
+  ::ng-deep .mat-focused .mat-form-field-label {
+    /*change color of label*/
+    color: #20a8d8 !important;
+  }
+  
+  ::ng-deep
+    .mat-form-field-appearance-outline.mat-focused
+    .mat-form-field-outline-thick {
+    color: #20a8d8 !important;
+  }
+  
