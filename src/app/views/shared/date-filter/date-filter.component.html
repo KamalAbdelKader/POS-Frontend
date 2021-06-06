@@ -20,7 +20,7 @@
     </mat-form-field>
   </div>
   <br>
-  <div>
+  <div *ngIf="showCategory == true">
     <mat-form-field appearance="fill">
       <mat-label>Select Category</mat-label>
       <select formControlName ="categoryName" matNativeControl>

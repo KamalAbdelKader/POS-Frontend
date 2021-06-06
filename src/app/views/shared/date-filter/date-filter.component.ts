@@ -12,6 +12,7 @@ export class DateFilterComponent implements OnInit {
 
   @Input('form') filterForm: FormGroup;
   @Input('categories') categories: Category[] = [];
+  @Input('showCategory') showCategory: boolean = true;
 
   get fromDate() {
     return this.filterForm.get('fromDate')
