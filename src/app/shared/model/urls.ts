@@ -2,6 +2,7 @@ export class Urls {
   private categoryController = "API/categoryApi/";
   category = {
     getAll: `${this.categoryController}get-all-categories`,
+    categoryUrlByUserAccess: `${this.categoryController}get-categoryByUserAccess`,
   };
 
   private invoiceController = "API/InvoiceReportApi/";

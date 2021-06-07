@@ -49,15 +49,6 @@ export class AccountStatmentComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
-  // applyFilter(event: Event) {
-  //   const filterValue = (event.target as HTMLInputElement).value;
-  //   this.dataSource.filter = filterValue.trim().toLowerCase();
-
-  //   if (this.dataSource.paginator) {
-  //     this.dataSource.paginator.firstPage();
-  //   }
-  // }
-
   onStart() {
     this.dataSource.filterPredicate = (
       data: AccountStatment,

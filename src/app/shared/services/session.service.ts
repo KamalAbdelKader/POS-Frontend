@@ -12,6 +12,7 @@ export class SessionService {
   
   private readonly _products = 'p___k';
   private readonly _dateTime = 'p___d';
+  private readonly _userName = 'p___u';
 
   constructor(private encrDecrService: EncrDecrService) {}
 
@@ -30,6 +31,15 @@ export class SessionService {
 
   getTime(): string {
     return this.getValue(this._dateTime);
+  }
+
+  setUserName(userName: string) {
+    const val = userName;
+    this.setValue(this._userName, val);
+  }
+
+  getUserName(): string {
+    return this.getValue(this._userName);
   }
 
   clearTime() {
@@ -51,6 +61,9 @@ export class SessionService {
         break;
       case this._dateTime:
         this.setlocalValue(this._dateTime, value);
+        break;
+      case this._userName:
+        this.setlocalValue(this._userName, value);
         break;
       default:
         break;

@@ -27,8 +27,9 @@ export class AuthService extends DataService {
     this.sessionService.clearTime();
   }
 
-  onLoginChange(isLogin: boolean) {
+  onLoginChange(isLogin: boolean, userNumber: string) {
     if(isLogin) {
+      this.sessionService.setUserName(userNumber);
       this.sessionService.setTime(new Date());
     }
   }

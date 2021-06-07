@@ -24,11 +24,9 @@ export class LoginComponent implements OnInit {
     }
     // call api
     // when you finish the api
-    this.authService.login(this.userNumber).subscribe((reponse) => {
-      debugger; 
-      this.authService.onLoginChange(reponse);
-      const isLogin = this.authService.isLogin();
-      if (!isLogin) {
+    this.authService.login(this.userNumber).subscribe((response) => {
+      this.authService.onLoginChange(response, this.userNumber);
+      if (!this.authService.isLogin()) {
         this.error = "Wrong Pin";
         return;
       } else {
@@ -36,17 +34,5 @@ export class LoginComponent implements OnInit {
       } 
     });
 
-    // // this for demo
-    // const respone = this.authService.demoLogin(this.userNumber);
-    // this.authService.onLoginChange(respone);
-    // const isLogin = this.authService.isLogin();
-    // if (!isLogin) {
-    //   this.error = "Wrong Pin";
-    //   return;
-    // } else {
-    //   this.router.navigate(["./account-statment"]);
-    // }
-
-    // check reponse
   }
 }

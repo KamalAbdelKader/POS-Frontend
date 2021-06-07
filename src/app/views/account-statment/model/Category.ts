@@ -9,6 +9,7 @@ export class Category {
   sort1?: number;
   en_Name: string;
   question_Sandwich: string;
+  userAccess: string;
 
   constructor() {
     this.name = "";

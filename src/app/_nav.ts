@@ -14,11 +14,11 @@ export const navItems: INavData[] = [
       title: true,
       name: 'Reports',
     },
-  {
-    name: 'Account Statment',
-    url: '/account-statment',
-    icon: 'icon-speedometer',
-  },
+  // {
+  //   name: 'Account Statment',
+  //   url: '/account-statment',
+  //   icon: 'icon-speedometer',
+  // },
 
   {
     name: 'Inventory',

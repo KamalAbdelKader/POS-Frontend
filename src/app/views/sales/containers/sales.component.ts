@@ -63,18 +63,26 @@ export class SalesComponent implements OnInit, AfterViewInit {
   ) {}
 
   async ngOnInit() {
-    await this.getAll();
     await this.getAllCategories();
+    await this.getAll();
     this.onStart();
   }
 
   async getAll() {
     const response = await this.invoiceService.getAll().toPromise();
-    this.dataSource.data = response;
+    this.dataSource.data = response.filter(
+      (item) => item.groupName == this.form.get("categoryName")?.value
+    );
   }
 
   async getAllCategories() {
-    this.categories = await this.categoService.getCategoryies().toPromise();
+    this.categories = await this.categoService
+      .getCategoryiesByUserAccess()
+      .toPromise();
+
+    if (this.categories && this.categories.length > 0) {
+      this.form.get("categoryName")?.setValue(this.categories[0].name);
+    }
   }
 
   ngAfterViewInit() {
@@ -87,12 +95,8 @@ export class SalesComponent implements OnInit, AfterViewInit {
       const fromDate = this.form.get("fromDate")?.value;
       const toDate = this.form.get("toDate")?.value;
       const category = this.form.get("categoryName")?.value;
-
       const date = new Date(data["date"]);
-      if ((fromDate && toDate) || !IsNullOrEmptyString(category)) {
-        return this.getSelectedDate(date, fromDate, toDate, data, category);
-      }
-      return true;
+      return this.getSelectedDate(date, fromDate, toDate, data, category);
     };
   }
 
@@ -111,9 +115,7 @@ export class SalesComponent implements OnInit, AfterViewInit {
       return date >= fromDate && date <= toDate;
     }
 
-    if (!IsNullOrEmptyString(category)) {
-      return data.groupName == category;
-    }
+    return data.groupName == category;
   }
 
   applyFilter() {
