@@ -17,13 +17,6 @@ import { IsNullOrEmptyString } from "../../../shared/helper/helper";
   styleUrls: ["./sales.component.scss"],
 })
 export class SalesComponent implements OnInit, AfterViewInit {
-  totalDisplayedColums: string[] = [
-    "quantity",
-    "costValue",
-    "saleValue",
-    "profit",
-  ];
-
   displayedColumns: string[] = [
     "name",
     "quantity",
@@ -35,12 +28,32 @@ export class SalesComponent implements OnInit, AfterViewInit {
   accountStatment$: any;
   categories: Category[] = [];
   dataSource: MatTableDataSource<Sales> = new MatTableDataSource([]);
-  totalDataSource: MatTableDataSource<TotalSales> = new MatTableDataSource([]);
   form = new FormGroup({
     fromDate: new FormControl(""),
     toDate: new FormControl(""),
     categoryName: new FormControl(""),
   });
+
+  get salesList(): Sales[] {
+    return this.getSalesList();
+  }
+
+  get totalQuatity() {
+    return this.getTotal("quantity");
+  }
+
+  get totalProfit() {
+    return this.getTotal("profit");
+  }
+
+  get totalSalesValue() {
+    return this.getTotal("saleValue");
+  }
+
+  get totalCostValue() {
+    return this.getTotal("costValue");
+  }
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -51,7 +64,6 @@ export class SalesComponent implements OnInit, AfterViewInit {
 
   async ngOnInit() {
     await this.getAll();
-    await this.getTotal();
     await this.getAllCategories();
     this.onStart();
   }
@@ -63,12 +75,6 @@ export class SalesComponent implements OnInit, AfterViewInit {
 
   async getAllCategories() {
     this.categories = await this.categoService.getCategoryies().toPromise();
-  }
-
-  async getTotal() {
-    this.totalDataSource.data = await this.invoiceService
-      .getTotal()
-      .toPromise();
   }
 
   ngAfterViewInit() {
@@ -86,7 +92,6 @@ export class SalesComponent implements OnInit, AfterViewInit {
       if ((fromDate && toDate) || !IsNullOrEmptyString(category)) {
         return this.getSelectedDate(date, fromDate, toDate, data, category);
       }
-
       return true;
     };
   }
@@ -113,5 +118,16 @@ export class SalesComponent implements OnInit, AfterViewInit {
 
   applyFilter() {
     this.dataSource.filter = "" + Math.random();
+  }
+
+  getSalesList(): Sales[] {
+    const salesList = this.dataSource.filteredData as Sales[];
+    return salesList;
+  }
+
+  private getTotal(propName: string) {
+    return this.salesList
+      .map((items) => items[propName])
+      .reduce((prev, curr) => prev + curr, 0);
   }
 }
