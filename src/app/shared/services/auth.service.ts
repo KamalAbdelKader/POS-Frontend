@@ -24,7 +24,8 @@ export class AuthService extends DataService {
   }
 
   logOut() {
-    this.sessionService.clearTime();
+    this.sessionService.clearUserData();
+    this.sessionService.clearAll();
   }
 
   onLoginChange(isLogin: boolean, userNumber: string) {

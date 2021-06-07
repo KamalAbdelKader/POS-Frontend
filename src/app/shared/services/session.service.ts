@@ -42,8 +42,9 @@ export class SessionService {
     return this.getValue(this._userName);
   }
 
-  clearTime() {
+  clearUserData() {
     localStorage.removeItem(this._dateTime);
+    localStorage.removeItem(this._userName);
   }
 
   clearProducts(): void {
