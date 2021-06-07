@@ -21,14 +21,6 @@ export interface Transaction {
 })
 export class InventoryComponent implements OnInit, AfterViewInit {
   categories: Category[] = [];
-  totalDisplayedColums: string[] = [
-    "quantity",
-    "costPrice",
-    "salePrice",
-    "saleValue",
-    "costValue",
-  ];
-
   displayedColumns: string[] = [
     "barcode1",
     "name",
@@ -38,18 +30,38 @@ export class InventoryComponent implements OnInit, AfterViewInit {
     "endUser",
     "saleValue",
     "costValue",
-    "groupName"
+    "groupName",
   ];
   accountStatment$: any;
-
+  groupName = "";
   dataSource: MatTableDataSource<Inventory> = new MatTableDataSource([]);
   sourceData: Inventory[] = [];
-  totalDataSource: MatTableDataSource<TotalInventory> = new MatTableDataSource(
-    []
-  );
-
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+
+  get totalSaleValue() {
+    return this.getTotal("saleValue");
+  }
+
+  get totalEndUser() {
+    return this.getTotal("endUser");
+  }
+
+  get avgPriceValue() {
+    return this.getTotal("avgPrice");
+  }
+
+  get totalCostValue() {
+    return this.getTotal("costValue");
+  }
+
+  get totalexpr1() {
+    return this.getTotal("expr1");
+  }
+
+  get inventoryList(): any [] {
+    return this.dataSource.data;
+  }
 
   constructor(
     private inventoryService: InventoryService,
@@ -57,25 +69,26 @@ export class InventoryComponent implements OnInit, AfterViewInit {
   ) {}
 
   async ngOnInit() {
-    await this.getAll();
-    await this.getTotal();
     await this.getAllCategories();
+    await this.getAll();
   }
 
   async getAllCategories() {
-    this.categories = await this.categoService.getCategoryies().toPromise();
+    this.groupName = "";
+    this.categories = await this.categoService
+      .getCategoryiesByUserAccess()
+      .toPromise();
+
+    if (this.categories && this.categories.length > 0) {
+      this.groupName = this.categories[0].name;
+      this.onCategoryChange(this.categories[0].name);
+    }
   }
 
   async getAll() {
     const response = await this.inventoryService.GetAll().toPromise();
-    this.dataSource.data = response;
+    this.dataSource.data = response.filter((item: any) => item.groupName == this.groupName);
     this.sourceData = CloneObject(response);
-  }
-
-  async getTotal() {
-    this.totalDataSource.data = await this.inventoryService
-      .getTotal()
-      .toPromise();
   }
 
   ngAfterViewInit() {
@@ -92,11 +105,11 @@ export class InventoryComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onCategoryChange(event: Event) {
-    const categoryName = (event.target as HTMLInputElement).value;
+  onCategoryChange(value: string) {
     const data = CloneObject(this.sourceData) as any;
-    if(categoryName) {
-      this.dataSource.data = data.filter((cat) => cat.groupName == categoryName);
+    this.groupName = value;
+    if (value) {
+      this.dataSource.data = data.filter((cat) => cat.groupName == value);
     } else {
       this.dataSource.data = data;
     }
@@ -104,5 +117,12 @@ export class InventoryComponent implements OnInit, AfterViewInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+
+  private getTotal(propName: string) {
+    return this.inventoryList
+      .map((items) => items[propName])
+      .reduce((prev, curr) => prev + curr, 0);
   }
 }
