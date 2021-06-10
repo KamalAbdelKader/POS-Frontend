@@ -13,7 +13,7 @@
 <div style="width: 100%">
   <mat-form-field appearance="fill">
     <mat-label>Select Category</mat-label>
-    <select matNativeControl (change)="onCategoryChange(event.target.value)">
+    <select matNativeControl (change)="onCategoryChange($event.target.value)">
       <option value="">Select Category</option>
       <option
         [selected]="category.name == groupName"
