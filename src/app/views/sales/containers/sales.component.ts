@@ -9,7 +9,10 @@ import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { Sales } from "../models/sales";
 import { FormGroup, FormControl } from "@angular/forms";
-import { IsNullOrEmptyString } from "../../../shared/helper/helper";
+import {
+  CloneObject,
+  IsNullOrEmptyString,
+} from "../../../shared/helper/helper";
 
 @Component({
   selector: "app-home-view-container",
@@ -63,26 +66,25 @@ export class SalesComponent implements OnInit, AfterViewInit {
   ) {}
 
   async ngOnInit() {
+    this.onStart();
     await this.getAllCategories();
     await this.getAll();
-    this.onStart();
   }
 
   async getAll() {
     const response = await this.invoiceService.getAll().toPromise();
-    this.dataSource.data = response.filter(
-      (item) => item.groupName == this.form.get("categoryName")?.value
-    );
+    this.dataSource.data = response;
+
+    if (this.categories && this.categories.length > 0) {
+      this.form.get("categoryName")?.setValue(this.categories[0].name);
+      this.applyFilter();
+    }
   }
 
   async getAllCategories() {
     this.categories = await this.categoService
       .getCategoryiesByUserAccess()
       .toPromise();
-
-    if (this.categories && this.categories.length > 0) {
-      this.form.get("categoryName")?.setValue(this.categories[0].name);
-    }
   }
 
   ngAfterViewInit() {
