@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
         this.error = "Wrong Pin";
         return;
       } else {
-        this.router.navigate(["./account-statment"]);
+        this.router.navigate(["./inventory"]);
       } 
     });
 
