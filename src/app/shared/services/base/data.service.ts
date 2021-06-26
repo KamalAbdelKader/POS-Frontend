@@ -1,3 +1,4 @@
+import { AppConfig } from './../../config/setting.service';
   
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -9,7 +10,7 @@ import { Urls } from '../../model/urls';
 export abstract class DataService {
   // incase the url need to call from json file in asset folder
   // protected domain = AppConfig.settings.apiServer;
-  protected domain = environment.url;
+  protected domain = AppConfig.settings.apiServer;
   protected url: Urls;
   constructor(public http: HttpClient) {
     this.url = new Urls();

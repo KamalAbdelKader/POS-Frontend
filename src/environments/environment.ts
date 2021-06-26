@@ -5,7 +5,6 @@
 
 export const environment = {
   production: false,
-  url: "http://62.171.165.227:9090",
+  url: "http://192.168.8.10:1122",
   // url: "https://localhost:44378",
 };
-  

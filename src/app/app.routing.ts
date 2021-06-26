@@ -9,17 +9,13 @@ import { LoginComponent } from "./views/products/component/product/login/login.c
 
 export const routes: Routes = [
   {
-    path: "login",
+    path: "",
     component: LoginComponent,
     data: {
       title: "Login Page",
     },
   },
-  {
-    path: "",
-    loadChildren: () =>
-      import("./views/products/products.module").then((m) => m.ProductsModule),
-  },
+   
   {
     path: "products",
     loadChildren: () =>

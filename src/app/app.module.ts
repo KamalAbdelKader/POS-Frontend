@@ -4,7 +4,7 @@ import { InventoryService } from "./views/inventory/services/inventory.service";
 import { SharedService } from "./shared/services/shared.service";
 import { NgMaterialModule } from "./views/ng-material/ng-material.module";
 import { BrowserModule } from "@angular/platform-browser";
-import { NgModule } from "@angular/core";
+import { APP_INITIALIZER, NgModule } from "@angular/core";
 import { LocationStrategy, HashLocationStrategy } from "@angular/common";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
@@ -55,6 +55,7 @@ import { ShoppingCartService } from "./shared/services/shopping.service";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { SalesService } from "./views/sales/services/sales.service";
 import { AuthService } from "./shared/services/auth.service";
+import { AppConfig } from "./shared/config/setting.service";
 
 @NgModule({
   imports: [
@@ -84,6 +85,12 @@ import { AuthService } from "./shared/services/auth.service";
   declarations: [AppComponent, LoginComponent, ...APP_CONTAINERS],
   providers: [
     {
+      provide: APP_INITIALIZER,
+      useFactory: (config: AppConfig) => () => config.load(),
+      deps: [AppConfig],
+      multi: true, 
+    },
+    {
       provide: LocationStrategy,
       useClass: HashLocationStrategy,
     },
@@ -97,6 +104,7 @@ import { AuthService } from "./shared/services/auth.service";
     InvoiceService,
     SalesService,
     AuthService,
+    AppConfig
   ],
   bootstrap: [AppComponent],
   exports: [LoginComponent],

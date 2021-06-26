@@ -14,7 +14,7 @@ export class DefaultLayoutComponent {
 
   logout() {
     this.authService.logOut();
-    this.router.navigate(["./products/login"]);
+    this.router.navigate(["./login"]);
   }
 
   toggleMinimize(e) {
