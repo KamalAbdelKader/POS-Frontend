@@ -72,7 +72,7 @@ export class SalesComponent implements OnInit, AfterViewInit {
     await this.getAll();
   }
 
-  async getAll() {
+  async getAll() { 
     if (this.categories && this.categories.length > 0) {
       const response = await this.salesService.getAll().toPromise();
       this.dataSource.data = response;
@@ -111,11 +111,11 @@ export class SalesComponent implements OnInit, AfterViewInit {
     data: Sales,
     category: any
   ): boolean {
-    if (fromDate && toDate && !IsNullOrEmptyString(category)) {
+    if (fromDate && toDate && !IsNullOrEmptyString(category) && category) {
       return date >= fromDate && date <= toDate && data.groupName == category;
     }
 
-    if (fromDate && toDate) {
+    if (fromDate && toDate && category) {
       return date >= fromDate && date <= toDate;
     }
 
@@ -123,7 +123,9 @@ export class SalesComponent implements OnInit, AfterViewInit {
   }
 
   applyFilter() {
+    
     this.dataSource.filter = "" + Math.random();
+
   }
 
   getSalesList(): Sales[] {
