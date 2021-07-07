@@ -1,3 +1,4 @@
+import { User } from './../../../../../shared/model/user';
 import { OnInit } from "@angular/core";
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
@@ -24,8 +25,8 @@ export class LoginComponent implements OnInit {
     }
     // call api
     // when you finish the api
-    this.authService.login(this.userNumber).subscribe((response) => {
-      this.authService.onLoginChange(response, this.userNumber);
+    this.authService.login(this.userNumber).subscribe((response: User) => {
+      this.authService.onLoginChange(response);
       if (!this.authService.isLogin()) {
         this.error = "Wrong Pin";
         return;

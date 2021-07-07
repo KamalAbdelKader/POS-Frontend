@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     public iconSet: IconSetService
-  ) {
+  ) { 
     // iconSet singleton
     iconSet.icons = {...freeSet} ;
   }

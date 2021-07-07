@@ -1,8 +1,10 @@
+import { User } from './../model/user';
 import { SessionService } from './session.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DataService } from './base/data.service';
 import { BehaviorSubject } from 'rxjs';
+import { ObjectHasValue } from '../helper/helper';
 
 @Injectable({
   providedIn: 'root'
@@ -28,9 +30,9 @@ export class AuthService extends DataService {
     this.sessionService.clearAll();
   }
 
-  onLoginChange(isLogin: boolean, userNumber: string) {
-    if(isLogin) {
-      this.sessionService.setUserName(userNumber);
+  onLoginChange(user: User) {
+    if(ObjectHasValue(user)) {
+      this.sessionService.setUser(user);
       this.sessionService.setTime(new Date());
     }
   }

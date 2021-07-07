@@ -1,18 +1,18 @@
-import { Injectable } from '@angular/core';
-import { IsNullOrEmptyString } from '../helper/helper';
-import { EncrDecrService } from './encrDecrService.service';
+import { Injectable } from "@angular/core";
+import { IsNullOrEmptyString } from "../helper/helper";
+import { User } from "../model/user";
+import { EncrDecrService } from "./encrDecrService.service";
 
 /** This service for handling local-storage variable
  * as encrapted and decrpted
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class SessionService {
-  
-  private readonly _products = 'p___k';
-  private readonly _dateTime = 'p___d';
-  private readonly _userName = 'p___u';
+  private readonly _products = "p___k";
+  private readonly _dateTime = "p___d";
+  private readonly _user = "p___ur";
 
   constructor(private encrDecrService: EncrDecrService) {}
 
@@ -33,18 +33,22 @@ export class SessionService {
     return this.getValue(this._dateTime);
   }
 
-  setUserName(userName: string) {
-    const val = userName;
-    this.setValue(this._userName, val);
+  setUser(user: User) {
+    if (user) {
+      const _user = JSON.stringify(user);
+      this.setValue(this._user, _user);
+    }
   }
 
-  getUserName(): string {
-    return this.getValue(this._userName);
+  getUser(): User {
+    const sUser = this.getValue(this._user);
+    const _user = JSON.parse(sUser) as User;
+    return _user;
   }
 
   clearUserData() {
     localStorage.removeItem(this._dateTime);
-    localStorage.removeItem(this._userName);
+    localStorage.removeItem(this._user);
   }
 
   clearProducts(): void {
@@ -63,8 +67,8 @@ export class SessionService {
       case this._dateTime:
         this.setlocalValue(this._dateTime, value);
         break;
-      case this._userName:
-        this.setlocalValue(this._userName, value);
+      case this._user:
+        this.setlocalValue(this._user, value);
         break;
       default:
         break;
@@ -84,6 +88,6 @@ export class SessionService {
       return this.encrDecrService.get(val);
     }
 
-    return '';
+    return "";
   }
 }

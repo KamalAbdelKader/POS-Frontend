@@ -22,7 +22,7 @@ export class CategoryService extends DataService {
   }
 
   getCategoryiesByUserAccess(): Observable<Category[]> {
-    const userAccess = this.sessionService.getUserName();
+    const userAccess = this.sessionService.getUser()?.userPin?.toString();
     return this.post<any>(this.categoryUrlByUserAccessUrl, { userAccess });
   }
 }

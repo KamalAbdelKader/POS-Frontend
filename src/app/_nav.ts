@@ -25,12 +25,6 @@ export const navItems: INavData[] = [
     url: '/inventory',
     icon: 'icon-speedometer',
   },
-
-  {
-    name: 'Invoice',
-    url: '/invoice',
-    icon: 'icon-speedometer',
-  },
   {
     name: 'sales',
     url: '/sales',
@@ -261,3 +255,12 @@ export const navItems: INavData[] = [
   //   attributes: { disabled: true },
   // },
 ];
+
+
+export function getNavItems(): INavData[] {
+  return [{
+    name: 'Invoice',
+    url: '/invoice',
+    icon: 'icon-speedometer',
+  }]
+}

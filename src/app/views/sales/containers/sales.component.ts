@@ -27,6 +27,7 @@ export class SalesComponent implements OnInit, AfterViewInit {
     "saleValue",
     "profit",
     "groupName",
+    "date"
   ];
   accountStatment$: any;
   categories: Category[] = [];
@@ -61,7 +62,7 @@ export class SalesComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
-    private invoiceService: SalesService,
+    private salesService: SalesService,
     private categoService: CategoryService
   ) {}
 
@@ -72,12 +73,13 @@ export class SalesComponent implements OnInit, AfterViewInit {
   }
 
   async getAll() {
-    const response = await this.invoiceService.getAll().toPromise();
-    this.dataSource.data = response;
-
     if (this.categories && this.categories.length > 0) {
+      const response = await this.salesService.getAll().toPromise();
+      this.dataSource.data = response;
       this.form.get("categoryName")?.setValue(this.categories[0].name);
       this.applyFilter();
+    } else {
+      this.dataSource.data = [];
     }
   }
 
