@@ -59,7 +59,7 @@ export class InventoryComponent implements OnInit, AfterViewInit {
     return this.getTotal("expr1");
   }
 
-  get inventoryList(): any [] {
+  get inventoryList(): any[] {
     return this.dataSource.data;
   }
 
@@ -70,7 +70,6 @@ export class InventoryComponent implements OnInit, AfterViewInit {
 
   async ngOnInit() {
     await this.getAllCategories();
-    await this.getAll();
   }
 
   async getAllCategories() {
@@ -80,6 +79,7 @@ export class InventoryComponent implements OnInit, AfterViewInit {
       .toPromise();
 
     if (this.categories && this.categories.length > 0) {
+      await this.getAll();
       this.groupName = this.categories[0].name;
       this.onCategoryChange(this.categories[0].name);
     }
@@ -87,7 +87,9 @@ export class InventoryComponent implements OnInit, AfterViewInit {
 
   async getAll() {
     const response = await this.inventoryService.GetAll().toPromise();
-    this.dataSource.data = response.filter((item: any) => item.groupName == this.groupName);
+    this.dataSource.data = response.filter(
+      (item: any) => item.groupName == this.groupName
+    );
     this.sourceData = CloneObject(response);
   }
 
@@ -111,14 +113,13 @@ export class InventoryComponent implements OnInit, AfterViewInit {
     if (value) {
       this.dataSource.data = data.filter((cat) => cat.groupName == value);
     } else {
-      this.dataSource.data = data;
+      this.dataSource.data = [];
     }
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
   }
-
 
   private getTotal(propName: string) {
     return this.inventoryList
